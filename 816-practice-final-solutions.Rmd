@@ -50,7 +50,7 @@ $$
 E[Y_0|D = 1] = \frac{0\times 0.35 + 0 \times 0.15 + 1 \times 0.3}{0.8} = 0.375
 $$
 
-so $ATT = 0.5625 - 0.375 = 0.1875$. Notice, by the way, that $E[Y|D = 0] = 0$, so the naive difference in means is 0.5625, much larger than the ATT and the wrong sign compared to the ATE of -0.05.
+so $ATT = 0.5625 - 0.375 = 0.1875$. Notice, by the way, that $E[Y|D = 0] = 1$, so the naive difference in means is $0.5625 - 1 = -0.4375$. The naive comparison of means makes the program look much worse than it actually is, because there are many students who select $D = 0$ who would never have graduated anyway.
 
 \hfill [$3 \times 5 = 15$ points]
 
