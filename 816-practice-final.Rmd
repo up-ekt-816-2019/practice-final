@@ -1,0 +1,100 @@
+---
+title: 'EKN-816: Practice Final'
+author:
+date: 
+output: pdf_document
+bibliography: ../../../../../library.bib
+biblio-style: authordate1
+geometry: margin=1in
+header_includes:
+  \DeclareMathOperator*\esssup{ess \, sup}
+  \DeclareMathOperator*\plim {plim}
+  \DeclareMathOperator*\cov {cov}
+---
+
+
+
+_There are 60 points available on this exam. It will be graded out of 50 i.e. there are 10 bonus points available._
+
+**You have three hours to complete this exam. You may refer to any written materials you find useful, but no electronic devices are permitted.**
+
+1. Consider a population of high school students who have the option to take an extracurricular program which teaches life skills, allows for some socializing, and provides academic enrichment activities and mentoring. However, the program (and travelling to the venue where it is held) requires a significant time commitment. Students also differ in their abilities, so while participating may help some students' performance in school, it could possibly hurt others.
+
+For a given student, let $Y_0$ be an indicator for whether he or she would graduate without participating in the program, and let $Y_1$ be an indicator for whether he or she would graduate when participating.
+
+(a) List the four possible configurations of the potential outcomes for a given student.
+
+(b) Suppose that 30\% of the students would graduate with or without the program; 20\% are strictly harmed by it (i.e. they would graduate without it, but not with it); and that 35\% would not graduate whether or not they participate. What is the average treatment effect of the program?
+
+(c) Now suppose that students choose to participate if they are weakly better off with the program (i.e. if $Y_1 \geq Y_0$). What will be the average effect of treatment on the treated?
+
+\hfill [$3 \times 5 = 15$ points]
+
+2. Consider a linear regression model with one regressor
+\begin{eqnarray}
+y_i & = & \beta_0 + \beta_1x^*_i + \varepsilon_i
+\end{eqnarray}
+with $E[\varepsilon_i|x^*_i] = 0$ and $V[\varepsilon_i|x^*_i] = \sigma^2_\varepsilon$. Unfortunatly, you observe $(y_i, x_i)^n_{i=1}$, where
+\begin{eqnarray}
+x_i & = & x^*_i + u_i 
+\end{eqnarray}
+is a mismeasured version of $x^*$. Assume
+\begin{eqnarray}
+E[u_i|x^*_i] & = & 0 \\
+V[u_i|x^*_i] & = & \sigma^2_u
+\end{eqnarray}
+
+(a) Show that a regression of $y$ on $x$ will be inconsistent for $\beta_1$. In particular, show that
+\begin{eqnarray}
+\text{plim}_{n\rightarrow\infty}\widehat{\beta}_1 & = & \beta_1\left(\frac{V[x^*]}{V[x^*] + \sigma^2_u}\right)
+\end{eqnarray}
+
+\par (Hint: use the fact that $\widehat{\beta}_1$ is the ratio of $\text{cov}(y,x)$ to $V[x]$ in the sample. Then invoke the LLN and Slutsky's theorem.) This phenomenon is often called \emph{attenuation bias}.
+
+(b) Now consider estimating the "reverse" regression
+\begin{eqnarray}
+x_i & = & \delta_0 + \delta_1y_i + \widetilde{\varepsilon}_i
+\end{eqnarray}
+Show that $\left(\plim_{n\rightarrow\infty}\widehat{\delta}_1\right)^{-1}$ is an upper bound for $\beta_1$ in absolute value, i.e.
+\begin{eqnarray}
+|\text{plim}_{n\rightarrow\infty}\widehat{\beta}_1| \leq & |\beta_1| & \leq \left(|\text{plim}_{n\rightarrow\infty}\widehat{\delta}_1|\right)^{-1}
+\end{eqnarray}
+
+\hfill [$2 \times 5 = 10$ points]
+
+3. Consider the excerpt from @Dinkelman2011 reproduced as Figure \ref{fig:dinkelman_table4_5} below.
+
+\begin{figure}[htb]
+\includegraphics[width = \textwidth]{dinkelman_table4_5.pdf} 
+\label{fig:dinkelman_table4_5}
+\caption{Excerpt From @Dinkelman2011}
+\end{figure}
+
+Recall that the model in the paper is as follows: for community $j$ in district $d$ at time $t$,
+\begin{eqnarray}
+y_{jdt} & = & \alpha_0 + \alpha_1t + \alpha_2T_{jdt} + \mu_j + \delta_jt + \rho_d + \lambda_dt + \varepsilon_{jdt}
+\end{eqnarray}
+where $y_{jdt}$ is the employment-to-population ratio for a given sex. Taking first differences we get
+\begin{eqnarray}
+\Delta y_{jdt} & = & \alpha_1 + \alpha_2\Delta T_{jdt} + \delta_j + \lambda_d + \Delta\varepsilon_{jdt}
+\end{eqnarray}
+\par Dinkelman also includes controls for baseline levels of employment $\mathbf{X}_{jdt}$ (population density, local sex ratio, average education levels, distance to electricity grid, to major roads, to major town\ldots) She then uses average land gradient in the community as an instrument for $\Delta T_{jdt}$: more gently sloped areas are easier to connect to the grid. So, she estimates the IV system
+
+\begin{eqnarray}
+\Delta y_{jdt} & = & \alpha_1 + \alpha_2\Delta T_{jdt} + \mathbf{X}_{jdt}\beta + \delta_j + \lambda_d + \Delta\varepsilon_{jdt} \\
+\Delta T_{jdt} & = & \pi_0 + \pi_1Z_j + \mathbf{X}_{jdt}\pi_2 + \gamma_d + \tau_{jdt}
+\end{eqnarray}
+
+(a) What is the ``treatment effect'' of interest? Suppose the treatment effect is estimated to be 0.03. Explain in words what this means.
+(b) Is this model overidentified?
+(c) Can you say anything about instrument relevance from the evidence provided here? 
+(d) Can you think of a reason why $\Delta\varepsilon_{jdt}$ might be heteroskedastic? Explain the economics of your argument. (Hint: think of what $\varepsilon_{jdt}$ represents. What might you expect about the variance of those factors across communities $j$ or across districts $d$?)
+(e) Suppose that a community with a poverty rate of 0.65 (i.e. 65\%) in 1996 that is unconnected to the electricity grid receives an electrification project during the sample period. Coincidentally the poverty rate in this community also falls to 61\% over the same period. What do you predict will happen to the employment-population ratio for women in this community?
+(f) Can you quantify the precision of your prediction above? If so, provide the standard error of the prediction you made. If you cannot, what information would you need to calculate it? Be as explicit as you can.
+(g) Comment on the validity of Dinkelman's instrument. Could you test whether the instrument is valid with this data?
+
+
+\hfill [$7 \times 5 = 35$ points]
+
+
+# References

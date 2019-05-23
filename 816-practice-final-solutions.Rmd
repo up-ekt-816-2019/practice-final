@@ -1,0 +1,180 @@
+---
+title: 'EKN-816 Practice Final: Suggested Solutions'
+author:
+date: 
+output: pdf_document
+bibliography: ../../../../../library.bib
+biblio-style: authordate1
+geometry: margin=1in
+header_includes:
+  \DeclareMathOperator*\esssup{ess \, sup}
+  \DeclareMathOperator*\plim {plim}
+  \DeclareMathOperator*\cov {cov}
+---
+
+
+
+_There are 60 points available on this exam. It will be graded out of 50 i.e. there are 10 bonus points available._
+
+**You have three hours to complete this exam. You may refer to any written materials you find useful, but no electronic devices are permitted.**
+
+1. Consider a population of high school students who have the option to take an extracurricular program which teaches life skills, allows for some socializing, and provides academic enrichment activities and mentoring. However, the program (and travelling to the venue where it is held) requires a significant time commitment. Students also differ in their abilities, so while participating may help some students' performance in school, it could possibly hurt others.
+
+For a given student, let $Y_0$ be an indicator for whether he or she would graduate without participating in the program, and let $Y_1$ be an indicator for whether he or she would graduate when participating.
+
+(a) List the four possible configurations of the potential outcomes for a given student.
+
+**Answer:** Whether you graduate or not is binary. The joint distribution of potential outcomes is as follows:
+
+|              | $Y_1 = 0$ | $Y_1 = 1$  |
+| :----------: | :-------: | :---------:|
+| $Y_0 =  0$   |    0.35   |  0.15      |
+| $Y_0 = 1$    |    0.2    |  0.3       |
+
+(b) Suppose that 30\% of the students would graduate with or without the program; 20\% are strictly harmed by it (i.e. they would graduate without it, but not with it); and that 35\% would not graduate whether or not they participate. What is the average treatment effect of the program?
+
+**Answer:** Filling in the joint distribution as above, we have $E[Y_1 - Y_0] = E[Y_1] - E[Y_0] = 0.45 - 0.5 = -0.05$. So the treatment actually harms students (on average).
+
+(c) Now suppose that students choose to participate if they are weakly better off with the program (i.e. if $Y_1 \geq Y_0$). What will be the average effect of treatment on the treated?
+
+**Answer:** We are given that $D = 1$ if and only if $Y_1 \geq Y_0$. Thus, $P(D = 1) = 0.35 + 0.15 + 0.3 = 0.8$.
+
+Next, to compute the ATT, we need to find
+
+$$
+E[Y_1|D = 1] = \frac{0\times 0.35 + 1 \times 0.15 + 1 \times 0.3}{0.8} = 0.5625
+$$
+and
+
+$$
+E[Y_0|D = 1] = \frac{0\times 0.35 + 0 \times 0.15 + 1 \times 0.3}{0.8} = 0.375
+$$
+
+so $ATT = 0.5625 - 0.375 = 0.1875$. Notice, by the way, that $E[Y|D = 0] = 0$, so the naive difference in means is 0.5625, much larger than the ATT and the wrong sign compared to the ATE of -0.05.
+
+\hfill [$3 \times 5 = 15$ points]
+
+2. Consider a linear regression model with one regressor
+\begin{eqnarray}
+y_i & = & \beta_0 + \beta_1x^*_i + \varepsilon_i
+\end{eqnarray}
+with $E[\varepsilon_i|x^*_i] = 0$ and $V[\varepsilon_i|x^*_i] = \sigma^2_\varepsilon$. Unfortunatly, you observe $(y_i, x_i)^n_{i=1}$, where
+\begin{eqnarray}
+x_i & = & x^*_i + u_i 
+\end{eqnarray}
+is a mismeasured version of $x^*$. Assume
+\begin{eqnarray}
+E[u_i|x^*_i] & = & 0 \\
+V[u_i|x^*_i] & = & \sigma^2_u
+\end{eqnarray}
+
+(a) Show that a regression of $y$ on $x$ will be inconsistent for $\beta_1$. In particular, show that
+\begin{eqnarray}
+\text{plim}_{n\rightarrow\infty}\widehat{\beta}_1 & = & \beta_1\left(\frac{V[x^*]}{V[x^*] + \sigma^2_u}\right)
+\end{eqnarray}
+
+\par (Hint: use the fact that $\widehat{\beta}_1$ is the ratio of $\text{cov}(y,x)$ to $V[x]$ in the sample. Then invoke the LLN and Slutsky's theorem.) This phenomenon is often called \emph{attenuation bias}.
+
+**Answer:** We have $\cov(y, x) = \beta_1\times (V[x] - \cov(x, u)) = \beta_1V[x^*]$. Since $V[x] = V[x^*] + \sigma^2_u > V[x^*]$, we have the usual attenuation bias result.
+
+(b) Now consider estimating the "reverse" regression
+\begin{eqnarray}
+x_i & = & \delta_0 + \delta_1y_i + \widetilde{\varepsilon}_i
+\end{eqnarray}
+Show that $\left(\plim_{n\rightarrow\infty}\widehat{\delta}_1\right)^{-1}$ is an upper bound for $\beta_1$ in absolute value, i.e.
+\begin{eqnarray}
+|\text{plim}_{n\rightarrow\infty}\widehat{\beta}_1| \leq & |\beta_1| & \leq \left(|\text{plim}_{n\rightarrow\infty}\widehat{\delta}_1|\right)^{-1}
+\end{eqnarray}
+
+**Answer:** Rearrange the expression for $y$ in terms of $x^*$ to get
+
+$$
+x^* = -\frac{\beta_0}{\beta_1} + \frac{1}{\beta_1}y -\frac{1}{\beta_1}\varepsilon
+$$
+
+So, if we add $u$ to both sides and take the covariance with $y$, we get
+
+$$
+\cov(y,x) = \frac{1}{\beta_1}V[y] - \frac{1}{\beta_1}\cov(y, \varepsilon) + \cov(y,u)
+$$
+
+Then, we get 
+
+$$
+\plim_{n\rightarrow\infty}\widehat{\delta}_1  = \frac{\cov(x,y)}{V[y]} = \frac{1}{\beta_1}\left(\frac{V[y] - \sigma^2_\varepsilon}{V[y]}\right). 
+$$
+
+Since $V[y] > \sigma^2_\varepsilon > 0$, we have the required result.
+
+\hfill [$2 \times 5 = 10$ points]
+
+3. Consider the excerpt from @Dinkelman2011 reproduced as Figure \ref{fig:dinkelman_table4_5} below.
+
+\begin{figure}[htb]
+\includegraphics[width = \textwidth]{dinkelman_table4_5.pdf} 
+\label{fig:dinkelman_table4_5}
+\caption{Excerpt From @Dinkelman2011}
+\end{figure}
+
+Recall that the model in the paper is as follows: for community $j$ in district $d$ at time $t$,
+\begin{eqnarray}
+y_{jdt} & = & \alpha_0 + \alpha_1t + \alpha_2T_{jdt} + \mu_j + \delta_jt + \rho_d + \lambda_dt + \varepsilon_{jdt}
+\end{eqnarray}
+where $y_{jdt}$ is the employment-to-population ratio for a given sex. Taking first differences we get
+\begin{eqnarray}
+\Delta y_{jdt} & = & \alpha_1 + \alpha_2\Delta T_{jdt} + \delta_j + \lambda_d + \Delta\varepsilon_{jdt}
+\end{eqnarray}
+\par Dinkelman also includes controls for baseline levels of employment $\mathbf{X}_{jdt}$ (population density, local sex ratio, average education levels, distance to electricity grid, to major roads, to major town\ldots) She then uses average land gradient in the community as an instrument for $\Delta T_{jdt}$: more gently sloped areas are easier to connect to the grid. So, she estimates the IV system
+
+\begin{eqnarray}
+\Delta y_{jdt} & = & \alpha_1 + \alpha_2\Delta T_{jdt} + \mathbf{X}_{jdt}\beta + \delta_j + \lambda_d + \Delta\varepsilon_{jdt} \label{eq:structural_eqn} \\
+\Delta T_{jdt} & = & \pi_0 + \pi_1Z_j + \mathbf{X}_{jdt}\pi_2 + \gamma_d + \tau_{jdt} \label{eq:first_stage}
+\end{eqnarray}
+
+(a) What is the "treatment effect" of interest? Suppose the treatment effect is estimated to be 0.03. Explain in words what this means.
+
+**Answer:** The coefficient on $T_{jdt}$ is the "treatment effect". If $\alpha_2 = 0.03$, this would mean that (holding all the other variables constant) we would expect the employment-population ratio in a community that got connected to the grid to grow by 3 percentage points more - relative to trend - than one which did not.
+
+(b) Is this model overidentified?
+
+**Answer:** No, the model is just-identified: there is one endogenous regressor ($T_{jdt}$) and one instrument (average gradient, $Z_i$).
+
+(c) Can you say anything about instrument relevance from the evidence provided here? 
+
+**Answer:** No: we only have the IV estimates from the "main equation" (\ref{eq:structural_eqn}). To analyze instrument regressors, we'd need the estimates and diagnostic statistics from the first stage (\ref{eq:first_stage}).
+
+(d) Can you think of a reason why $\Delta\varepsilon_{jdt}$ might be heteroskedastic? Explain the economics of your argument. (Hint: think of what $\varepsilon_{jdt}$ represents. What might you expect about the variance of those factors across communities $j$ or across districts $d$?)
+
+**Answer:** This is a harder question. The basic idea is to translate what heteroskedasticity means into context and think about whether it sounds plausible. So here "heteroskedasticity" means that $V[\Delta\varepsilon_{jdt}]$ is not constant across communities $j$. What do the $\varepsilon_{jdt}$'s represent? They are "shocks" to employment.
+
+The model does not take an explicit position on whether the shocks are demand or supply driven, which makes the argument  trickier, but we might imagine that there are labor demand shocks in some communities that are larger than in other communities, if for example the composition of employment is different across areas. (Imagine a village where everyone works as casual laborers in construction as compared to one where most people work in manufacturing, which we expect to be more stable.)
+
+(e) Suppose that a community with a poverty rate of 0.65 (i.e. 65\%) in 1996 that is unconnected to the electricity grid receives an electrification project during the sample period. Coincidentally the poverty rate in this community also falls to 61\% over the same period. What do you predict will happen to the employment-population ratio for women in this community?
+
+**Answer:** Let $\widehat{\beta}_{PR}$ be the estimated coefficient on poverty rate, which in specification (8) is 0.031. We have the predicted change in employment growth
+
+\begin{eqnarray}
+E[\Delta y|T = 1, PR = 0.61] - E[\Delta y|T = 0, PR = 0.65] & = & \widehat{\alpha}_2 + \widehat{\beta}_{PR}(0.61 - 0.65) \nonumber \\
+& = & 0.095 + 0.031\times(0.61 - 0.65) \nonumber \\
+& = & 0.09376 \nonumber
+\end{eqnarray}
+
+(f) Can you quantify the precision of your prediction above? If so, provide the standard error of the prediction you made. If you cannot, what information would you need to calculate it? Be as explicit as you can.
+
+**Answer:** We saw that the predicted change is $\widehat{\alpha}_2 + -0.04\widehat{\beta}_{PR}$, which therefore has a variance of
+\begin{eqnarray}
+V[\widehat{\alpha}_2 + -0.04\widehat{\beta}_{PR}] & = & V[\widehat{\alpha}_2] + -2\times0.04\cov(\widehat{\alpha}_2,\widehat{\beta}_{PR}) + (0.04)^2V[\widehat{\beta}_{PR}] \nonumber \\
+& = & (0.055)^2 + (0.04)^2(0.013)^2 - 0.08\cov(\widehat{\alpha}_2,\widehat{\beta}_{PR}) \nonumber
+\end{eqnarray}
+so we cannot estimate the standard error of the prediction from the information in the given regression table. We need to know the covariance of the two estimators involved, $\cov(\widehat{\alpha}_2,\widehat{\beta}_{PR})$, too.
+
+(g) Comment on the validity of Dinkelman's instrument. Could you test whether the instrument is valid with this data?
+
+**Answer:** Taking the second question first, we can't test the identifying restriction (that land gradient does not affect employment, except through its effects on the likelihood of electrification and through its correlation with the controls), since we are just-identified. (If we had an overidentified model we could perform a Hansen-Sargan test.)
+
+As for the first question, I was looking for you to say something reasonable. For example you could have said something about agricultural employment being directly affected by gradient (a point discussed in the introduction of the paper).
+
+\hfill [$7 \times 5 = 35$ points]
+
+
+# References
